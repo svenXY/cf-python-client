@@ -120,3 +120,13 @@ class TestEntities(unittest.TestCase, AbstractTestCase):
         client.get.assert_called_with(client.get.return_value.url)
 
         self.assertEqual(entity["entity"]["name"], "name-423")
+
+    def test_len(self):
+        client = MagicMock()
+        entity_manager = EntityManager(self.TARGET_ENDPOINT, client, "/fake/something")
+
+        client.get.return_value = self.mock_response("/fake/something", HTTPStatus.OK, None, "fake", "GET_response.json")
+        cpt = len(entity_manager)
+        client.get.assert_called_with(client.get.return_value.url)
+
+        self.assertEqual(cpt, 3)

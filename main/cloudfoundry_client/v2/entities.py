@@ -110,6 +110,14 @@ class EntityManager(object):
     def __getitem__(self, entity_guid) -> Entity:
         return self.get(entity_guid)
 
+    def __len__(self):
+        return self.len()
+
+    def len(self, **kwargs):
+        url_requested = self._get_url_filtered("%s%s" % (self.target_endpoint, self.entity_uri), **kwargs)
+        response_json = self._read_response(self.client.get(url_requested, JsonObject))
+        return response_json.get("total_results", 0)
+
     def list(self, **kwargs) -> PaginateEntities:
         return self._list(self.entity_uri, **kwargs)
 
